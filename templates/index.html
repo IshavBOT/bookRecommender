@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommender System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        font-family: 'Nunito', sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        position: relative;
+        padding-bottom: 60px;
+    }
+    .navbar {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px);
+        border: none;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand, .nav.navbar-nav li a {
+        color: #fff !important;
+        font-size: 18px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        font-family: 'Nunito', sans-serif;
+    }
+    .navbar-brand {
+        font-weight: 700;
+        font-size: 24px;
+    }
+    .page-title {
+        color: #fff;
+        font-weight: 700;
+        margin: 40px 0;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        border-bottom: 2px solid rgba(255,255,255,0.1);
+        padding-bottom: 20px;
+        font-family: 'Nunito', sans-serif;
+    }
+    .card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 20px;
+        transition: all 0.3s ease;
+        height: 520px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+        transform: rotate(45deg);
+        pointer-events: none;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+    .card-img-top {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .book-title {
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 10px 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-family: 'Nunito', sans-serif;
+    }
+    .book-author {
+        color: rgba(255,255,255,0.8);
+        font-size: 16px;
+        font-style: italic;
+        margin: 5px 0;
+        font-family: 'Nunito', sans-serif;
+    }
+    .book-stats {
+        color: rgba(255,255,255,0.7);
+        font-size: 14px;
+        margin-top: auto;
+        padding: 15px 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        font-family: 'Nunito', sans-serif;
+    }
+    .book-stats p {
+        margin: 5px 0;
+        display: flex;
+        justify-content: space-between;
+    }
+    .card-wrapper {
+        margin-bottom: 30px;
+        height: 520px;
+    }
+    .rating-stars {
+        color: #ffd700;
+    }
+    .footer-text {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        color: rgba(255,255,255,0.7);
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+    }
+</style>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand">Literary Compass</a>
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/recommend" style="background-color: #e74c3c; color: #fff; font-weight: bold;">Recommend</a></li>
+            </ul>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-title">Curated Collection: Top 50 Books</h1>
+            </div>
+
+            {% for i in range(book_name|length) %}
+            <div class="col-md-3 card-wrapper">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="card-img-top" src="{{ image[i] }}" alt="{{ book_name[i] }}">
+                        <p class="book-title">{{ book_name[i] }}</p>
+                        <h4 class="book-author">by {{ author[i] }}</h4>
+                        <div class="book-stats">
+                            <p>
+                                <span>Reader Votes</span>
+                                <span>{{ votes[i] }}</span>
+                            </p>
+                            <p>
+                                <span>Rating</span>
+                                <span class="rating-stars">
+                                    {% for _ in range(rating[i]|int) %}★{% endfor %}
+                                    {% if (rating[i] % 1) >= 0.5 %}½{% endif %}
+                                    {% for _ in range(5 - rating[i]|int) %}☆{% endfor %}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="footer-text">by Ishav</div>
+
+</body>
+
+</html>
